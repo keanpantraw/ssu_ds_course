@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
-<title>Введение в машинное обучение slides</title>
+<title>Лекция 3. Полносвязные нейронные сети slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13242,47 +13242,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Лекция 1. Введение в машинное обучение</strong></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Как строится курс</strong></p>
-<ul>
-<li>Курс ознакомительный</li>
-<li>Ориентирован на практику</li>
-</ul>
-<p>План:</p>
-<ul>
-<li>Введение. Обзор основных алгоритмов</li>
-<li>Задачи обработки изображений</li>
-<li>Задачи обработки текстов</li>
-<li>Практики по каждой лекции - важнейшая часть курса</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Как строится курс</strong></p>
-<p>Лекции будут читать:</p>
-<ul>
-<li>Владимир Борисов</li>
-<li>Александр Кузнецов</li>
-<li>Илья Лось</li>
-<li>Борис Филиппов</li>
-</ul>
-<p>В лекциях активно использовались материалы:</p>
-<ul>
-<li><a href="https://www.coursera.org/learn/supervised-learning/">Специализации яндекса по машинному обучению</a></li>
-<li><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9C%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_%28%D0%BA%D1%83%D1%80%D1%81_%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D0%B9%2C_%D0%9A.%D0%92.%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D1%86%D0%BE%D0%B2%29">Курса К. Воронцова по машинному обучению</a></li>
-<li><a href="http://cs231n.github.io/">Курса CS231n Стэнфордского университета</a></li>
-</ul>
+<p><strong>Лекция 3. Полносвязные нейронные сети</strong></p>
 
 </div>
 </div>
@@ -13292,10 +13252,10 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>О чём эта лекция</strong></p>
 <ul>
-<li>Что такое машинное обучение</li>
-<li>Какие бывают виды задач</li>
-<li>Что такое переобучение</li>
-<li>Разбор реальной задачи</li>
+<li>Что такое полносвязные нейронные сети</li>
+<li>Как они выглядят</li>
+<li>Каковы их возможности</li>
+<li>Как их обучают</li>
 </ul>
 
 </div>
@@ -13304,14 +13264,343 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Что такое машинное обучение</strong></p>
+<p><strong>Что такое нейрон?</strong></p>
+$$ \sigma(\sum_{j=1}^{n} x^j w_j - w_0) $$<p>$x^j$ - признаки, $w_j$ - веса признаков. $w_0$ - bias.<br>
+Аналогично линейной регрессии, обычно добавляют признак $x^0=-1$ и пишут $$ \sigma(\sum_{j=0}^{n} x^j w_j) $$
+<img src="neuron.png" alt="alt"></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Что такое нейрон?</strong>
+$$ \sigma(\sum_{j=0}^{n} x^j w_j) $$</p>
+<p>$\sigma$ - функция активации. 
+Если $ \sigma (z) =  \dfrac{1}{1+e^{-z}} $, то получаем логистическую регрессию.<br>
+Если $ \sigma(z) = z $, то получаем линейную регрессию.</p>
+<p>Существует множество разных функций активации.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Что может один нейрон?</strong></p>
+<p>Реализовать логическое "И" 
+$$ x^1 \land x^2 = x^1 + x^2 - 1.5 &gt; 0 $$</p>
+<p>Реализовать логическое "ИЛИ"</p>
+$$ x^1 \lor x^2  = x^1 + x^2 - 0.5 &gt; 0 $$<p>Реализовать логическое "НЕ"</p>
+$$ \lnot x^1 = -x^1 + 0.5 &gt; 0 $$
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Что НЕ может один нейрон?</strong></p>
+<p>Реализовать XOR (исключающее или).</p>
+<p>Два способа решить это:</p>
 <ul>
-<li>У термина есть много определений</li>
-<li>Как правило, под ним понимают извлечение закономерностей из примеров</li>
-<li>Применяют в задачах где трудно запрограммировать явные правила:<ul>
-<li>Рекомендации фильмов\книг</li>
-<li>Прогнозирование спроса на товары</li>
-<li>Поиск похожих товаров</li>
+<li>Добавление признака: $$ x^1 \oplus x^2  = x^1 + x^2 - 2 x^1 x^2 -0.5 &gt; 0$$</li>
+<li>Добавление <strong>слоя</strong>: $$ x^1 \oplus x^2  = (x^1 \lor x^2) - (x^1 \land x^2) -0.5 &gt; 0 $$</li>
+</ul>
+<p><img src="xor.png" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Нейронные сети как граф вычислений</strong></p>
+<p>Суперпозиция слоев:
+$$ x^1 \oplus x^2 = (x^1 \lor x^2) \land {\lnot (x^1 \land x^2)} $$</p>
+<p>где $\land, \lor, \lnot$ - нейроны с предыдущих слайдов и функцией активации $sign$.</p>
+<ul>
+<li>Нейронная сеть - граф вычислений (суперпозиция слоев - функций) над признаками. </li>
+<li><p>Таким образом с ними работают в современных библиотеках (tensorflow, pytorch, keras...)</p>
+</li>
+<li><p>Это язык описания архитектур нейронных сетей</p>
+</li>
+</ul>
+<p>Какие бывают архитектуры нейронных сетей?
+<img src="model.png" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Виды нейронных сетей</strong></p>
+<p>Существуют разные типы слоев (операций) и типы архитектур нейронных сетей:</p>
+<ul>
+<li>полносвязные</li>
+<li>сверточные</li>
+<li>рекуррентные</li>
+<li>рекурсивные</li>
+</ul>
+<p>При этом:</p>
+<ul>
+<li>В сверточных сетях используются полносвязные слои</li>
+<li>В рекуррентных сетях аналогично могут использоваться свертки</li>
+<li>и так далее</li>
+</ul>
+<p>Почему?</p>
+<ul>
+<li>Так происходит т.к. сеть - граф вычислений в котором могут встречаться разные операции</li>
+</ul>
+<p>Далее рассмотрим самый простой тип - полносвязные нейронные сети.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Пример полносвязной нейронной сети</strong></p>
+<p>У полносвязной нейронной сети каждый нейрон текущего слоя связан с каждым нейроном предыдущего.</p>
+<p>Пример для двух слоев:</p>
+<p><img src="fully_connected.png" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Нейронные сети</strong></p>
+<p>Вопрос: Чем параметры модели отличаются от гиперпараметров?</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Нейронные сети - параметры и гиперпараметры</strong></p>
+<p>Обучаемые параметры:</p>
+<ul>
+<li>Веса сети - $w_{ij}$ - вес связи нейрона\признака $i$ и нейрона $j$</li>
+</ul>
+<p>Гиперпараметры:</p>
+<ul>
+<li>Архитектура сети<ul>
+<li>Количество слоев</li>
+<li>Количество нейронов в слоях</li>
+<li>Используемые функции активации</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<p>На практике встречаются исключения, например функции активации с обучаемыми параметрами</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Нейронные сети - реальность</strong></p>
+<p>Что говорим:</p>
+<ul>
+<li>Нейроны, связи, веса, активации...</li>
+</ul>
+<p>Что происходит <em>на самом деле</em>:</p>
+<ul>
+<li>Матрицы умножаются на вектора и от них вычисляются нелинейные функции</li>
+</ul>
+$$ \sigma (\sum w_{ji} x_{kj}) = \sigma(W^T x) $$<p></p>
+<p>Это причина почему нейронные сети обучают на GPU:</p>
+<ul>
+<li>архитектура SIMD (single instruction multiple data) </li>
+<li>можно быстро умножать матрицы и применять функции на векторы</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Выразительная способность нейронных сетей</strong></p>
+<ul>
+<li>Нейронная сеть с одним скрытым слоем может отделить в $R^n$ любой многогранник</li>
+<li>Нейронная сеть с двумя скрытыми слоями может отделить в $R^n$ произвольную многогранную область<ul>
+<li>возможно не связную</li>
+<li>возможно не выпуклую</li>
+</ul>
+</li>
+<li>Нейронной сетью с одним скрытым слоем и нелинейной функцией активации (предыдущий слайд) можно приблизить любую непрерывную функцию с наперед заданной точностью</li>
+</ul>
+<p>Таким образом нейронные сети являются универсальными аппроксиматорами.</p>
+<ul>
+<li>Теоретически двух-трёх слоев достаточно</li>
+<li>На практике часто используют глубокие нейронные сети для встроенного обучения признаков</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<ul>
+<li>На практике применяют разные функции активации</li>
+<li>Обычно стараются применять дифференциируемые почти везде (кроме конечного количества точек)</li>
+</ul>
+<p>Очень часто используются:</p>
+<ul>
+<li>$ \sigma(x) = \dfrac{1}{1+e^{-x}}$ сигмоида, например, на выходе для задачи бинарной классификации</li>
+<li><p>$ softmax(x_j) = \dfrac{e^{x_j}}{\sum_{i}{e^{x_i}}} $ - софтмакс, чаще всего на выходе для задачи с несколькими непересекающимися классами</p>
+<p><img src="sigmoid.png" alt=""></p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<p>$ tanh(x) $ - гиперболический тангенс, ранее предлагался как альтернатива $\sigma(x)$ на скрытых слоях сети</p>
+<p><img src="Tanh.gif" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<p>$ ReLU(x) = max(x, 0) $ - REctified Linear Unit, широко используется сейчас для скрытых слоёв сетей</p>
+<p><img src="relu.png" width="50%"></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Обучение нейронных сетей</strong></p>
+<ul>
+<li>Как-правило для обучения сети требуется довольно большая выборка</li>
+<li>Функция потерь нейронной сети на практике не выпуклая</li>
+</ul>
+<p>Поэтому для обучения нейронных сетей сейчас применяют вариации метода стохастического градиентного спуска (как правило с использованием mini-batch).</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Обучение нейронных сетей</strong></p>
+<p>Проблема:</p>
+<p>На каждом шаге стохастического градиентного спуска нужно вычислить градиент ошибки. Как это сделать эффективно?</p>
+<p>Решение:</p>
+<p>Метод обратного распространения ошибки (Backprop)</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Пример:</p>
+<ul>
+<li>Полносвязная нейронная сеть с одним скрытым слоем (которую мы рассматривали некоторое время назад)</li>
+<li>Выходной слой $$a_m(x) = \sigma_{m} (\sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)}) $$
+Здесь $w_{hm}$ - вес связи нейрона h скрытого слоя и нейрона m выходного слоя</li>
+<li>Скрытый слой $$ u_h(x) = \sigma_{h} (\sum_\limits{j=0}^{n}{w_{jh} x^j}) $$
+Здесь также $w_{jh}$ - вес связи признака $x^j$ примера $x$ и нейрона h скрытого слоя</li>
+<li>Среднеквадратичная функция потерь
+$$ SE(x, y) = \dfrac{1}{2} \sum_\limits{m=1}^{M} (a_{m}(x) - y_{m})^2 $$</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Задача:</p>
+<ul>
+<li>Найти градиент - вектор производных по параметрам модели</li>
+</ul>
+<p>Вопрос залу:</p>
+<ul>
+<li>Что за параметры?</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Нужно найти $\nabla SE(w) = &lt; \dfrac{\partial SE(w)}{d w_{ij}} &gt; $ как функции от весов сети.</p>
+<p>Найдем сначала производные по нейронам выходного и скрытого слоя:
+$ \dfrac{\partial SE(w)}{d a_{m}} $ и $\dfrac{\partial SE(w)}{d u_{h}} $.</p>
+$$ \dfrac{\partial SE(w)}{d a_{m}}  = \dfrac{\partial \dfrac{1}{2} \sum_\limits{m=1}^{M} (a_{m}(w) - y_{m})^2}{d a_{m}} = a_m (w) - y_m = \epsilon_m $$<p></p>
+<p>$\epsilon_m$ - значение производной выше, ошибка модели на выходном слое.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Посмотрим на ошибку модели на скрытом слое:</p>
+<ul>
+<li>Правило дифф. сложной функции:
+$$\dfrac{\partial SE(w)}{d u_{h}} = \sum_\limits{m=1}^{M} \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d u_h} = $$</li>
+<li>Подстановка известного значения производной по $a_m$:
+$$= \sum_\limits{m=1}^{M} \epsilon_m \dfrac{\partial a_m}{d u_h} = $$</li>
+<li>По определению $a_m(x)$:
+$$= \sum_\limits{m=1}^{M} \epsilon_m \dfrac{\partial \sigma_{m} (\sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)})}{d u_h} = $$</li>
+</ul>
+<p>Вопрос:</p>
+<p>Что делаем дальше?</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>... продолжаем искать производную ошибки на скрытом слое:</p>
+<ul>
+<li>Правило дифф. сложной функции, второй раз:
+$$= \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' \dfrac{\partial \sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)}}{d u_h} = $$</li>
+<li>Результат:
+$$= \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' w_{hm}$$</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<ul>
+<li>Результат:
+$$\dfrac{\partial SE(w)}{d u_{h}} = \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' w_{hm} = \epsilon_h$$
+<img src="backprop.png" alt="">
+Наблюдения:<ul>
+<li>значение производной можно получить запустив сеть "наоборот"</li>
+<li>вычисление производной суть последовательное применение правила дифф. сложной функции над компонентами сети</li>
 </ul>
 </li>
 </ul>
@@ -13322,14 +13611,41 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Что такое машинное обучение</strong></p>
-<p>Существует много разных классов задач машинного обучения, часто упоминаемые:</p>
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Наблюдения:</p>
 <ul>
-<li>Обучение с учителем - по известным примерам и ответам (восстановление зависимости)</li>
-<li>Обучение без учителя - только по примерам (выделение закономерностей\структуры в данных)</li>
-<li>Обучение с подкреплением - когда алгоритм-агент обучается взаимодействуя с средой</li>
+<li>значение производной можно получить запустив сеть "наоборот"</li>
+<li>вычисление производной суть последовательное применение правила дифф. сложной функции над компонентами сети:<ul>
+<li>слоями</li>
+<li>функциями активаций</li>
 </ul>
-<p>Далее перечислим задачи обучения без учителя.</p>
+</li>
+</ul>
+<p>Подтверждение:
+$$\dfrac{\partial SE}{d w_{hm}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{hm}} = \epsilon_m \sigma_m' u_h(x)$$</p>
+$$\dfrac{\partial SE}{d w_{jh}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{jh}} = \epsilon_m \dfrac{\partial a_m}{d u_h} \dfrac{\partial u_h}{d w_{jh}} = \epsilon_m \epsilon_h \sigma_h' x^j $$
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<ul>
+<li>Прямой ход:<ul>
+<li>Применить слой за слоем на данный пример, посчитать значение функции потерь от выходов</li>
+</ul>
+</li>
+<li>Обратный ход:<ul>
+<li>Считать значения производных слой за слоем в обратном направлении от выходов к входам<ul>
+<li>Используя правило дифференцирования сложной функции</li>
+<li>Считать сначала производные ошибки от выходов, затем производные ошибки от последнего скрытого слоя и т.д. пока не будут расчитаны производные по всем весам</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Посчитаный градиент использовать для расчета шага в стохастическом градиентном спуске.</p>
 
 </div>
 </div>
@@ -13337,31 +13653,21 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Кластеризация</strong></p>
+<p><strong>Алгоритм обратного распространения ошибки на графе</strong></p>
+<p>Сейчас для работы с нейронными сетями активно используют идею графа вычислений.
+В графе есть следующие вершины:</p>
 <ul>
-<li>Задача: найти группы похожих объектов.</li>
-<li>В отличие от классификации мы не знаем правильных ответов</li>
+<li>Параметры модели (веса)</li>
+<li>Входы (пример из обучающей выборки)</li>
+<li>Операции (функции активации, умножение матрицы на вектор...)</li>
 </ul>
-<p><img src="clusterisation.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Кластеризация</strong></p>
-<p>Примеры:</p>
+<p>Прямой ход:</p>
 <ul>
-<li>Сегментация пользователей</li>
-<li>Поиск схожих пользователей</li>
+<li>Вычисление значение функции ошибки по графу от входов к вершине - функции ошибки</li>
 </ul>
-<p>Алгоритмы:</p>
+<p>Обратный ход:</p>
 <ul>
-<li>KMeans (выделение центроидов)</li>
-<li>ЕМ-алгоритм (работа с распределением)</li>
-<li>DBSCAN (по плотности объектов)</li>
-<li>...</li>
+<li>Вычисление производных ошибки для всех вершин графа в обратном порядке (от ошибки ко входам)</li>
 </ul>
 
 </div>
@@ -13370,17 +13676,8 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Понижение размерности</strong></p>
-<ul>
-<li>Задача: представить исходное признаковое описание меньшим количеством признаков (в пространстве меньшей размерности), сохранив как можно больше информации. </li>
-<li>В случае размерности 2 или 3 получаем задачу визуализации</li>
-</ul>
-<p>Алгоритмы:</p>
-<ul>
-<li>PCA - метод главных компонент</li>
-<li>tSNE</li>
-</ul>
-<p><img src="tsne_mnist.png" width=40%></p>
+<p><strong>Алгоритм обратного распространения ошибки на графе</strong></p>
+<p><img src="autodiff.png" alt=""></p>
 
 </div>
 </div>
@@ -13388,69 +13685,15 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Поиск аномалий</strong></p>
-<ul>
-<li>Задача: определить объект, который не похож на остальных. </li>
-<li>Особенность: аномалий мало или их вообще нет</li>
-</ul>
-<p>Алгоритмы:</p>
-<ul>
-<li>KNN - метод ближайших соседей</li>
-<li>Одноклассовый SVM</li>
-<li>...</li>
-</ul>
-<p>Перейдем к задаче обучения с учителем.</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Формальная постановка задачи обучения с учителем</strong></p>
-<p>$X$ - множество объектов</p>
-<p>$Y$ - множество ответов</p>
-<p>$f: X \rightarrow Y$ - неизвестная зависимость (целевая функция)</p>
+<p><strong>Алгоритм обратного распространения ошибки на графе</strong></p>
 <p>Дано:</p>
-<p>$\{x_1, x_2, x_3, ..., x_l\} \subset X$ - обучающая выборка</p>
-<p>$y_i = f(x_i),  \space\space i=1,...l$ - известные ответы (может отсуствовать)</p>
-<p>Найти:</p>
-<p>$a: X \rightarrow Y$ - алгоритм (модель), решающую функцию, приближающую $f$ на всем множестве $X$.</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Признаки</strong></p>
-<p>$x \in X$ - объект</p>
-<p>$x=(x^1, x^2, ..., x^d)$ - признаковое описание</p>
-<p>$c_i \in M $ - конкретный признак, может быть разных типов</p>
 <ul>
-<li>$M=\{0, 1\}$ - бинарный</li>
-<li>$M$ - конечное множество - категориальный (номинальный)</li>
-<li>$M$ - конечное упорядоченное множество - порядковый</li>
-<li>$M=\mathbb{R}$ - количественный</li>
+<li>Некоторый граф вычислений (как на предыдущем слайде)</li>
+<li>Значения входов, весов (и прочих параметров)</li>
 </ul>
-<p>Меняя множество ответов Y - получаем разные задачи. Рассмотрим их.</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Классификация</strong></p>
-<p>$Y=\{-1, +1\}$ - классификация на два класса (бинарная)</p>
-<p>$Y=\{1, 2, ..., M\} $ - классификаци на M непересекающихся классов</p>
-<p>$Y=\{0,1\}^M $ - классификация на M пересекающихся классов</p>
-<p>Примеры</p>
+<p>Вопрос:</p>
 <ul>
-<li>Что изображено на картинке: кошка или собака</li>
-<li>Какое слово из заранее известных записано в аудиофайле</li>
-<li>Какие теги (из заранее известного множества) сопоставить картинке
-<img src="classification.jpg" width=30%></li>
+<li>Что нужно знать о каждой вершине графа чтобы уметь применить на нём алгоритм обратного распространения ошибки?</li>
 </ul>
 
 </div>
@@ -13459,16 +13702,19 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Регрессия</strong></p>
-<p>$Y=\mathbb{R}$</p>
-<p>$Y=\mathbb{R}^m$</p>
-<p>Примеры</p>
+<p><strong>Алгоритм обратного распространения ошибки на графе</strong></p>
+<p>По сути для каждой вершины нужно знать:</p>
 <ul>
-<li>Какую ставить цену продажи для квартиры</li>
-<li>Прогноз погоды: температура, ветер, давление</li>
-<li>Предсказание спроса на товар в магазине
-<img src="regression.png" width=50%></li>
+<li>как по входам вычислить её значение (прямой ход)</li>
+<li>как посчитать её градиент от выходов (обратный ход)</li>
 </ul>
+<p>Таким образом построение нейронных сетей превращается из упражнений по дифференцированию и матричной алгебре в описание графов вычислений из заданных компонент (вершин). Обычно предоставляются:</p>
+<ul>
+<li>автоматическое дифференцирование графов - алгоритм обратного распространения ошибки</li>
+<li>набор компонент для построения сетей (слои, функции активации...)</li>
+<li>набор оптимизаторов для обучения</li>
+</ul>
+<p>Далее поговорим подробнее об обучении и борьбе с переобучением.</p>
 
 </div>
 </div>
@@ -13476,200 +13722,20 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Ранжирование</strong></p>
-<p>Y - конечное упорядоченное множество.</p>
-<p>Целевая функция $f$ упорядочивает объекты из $X$.</p>
-<p>Примеры:</p>
+<p><strong>Momentum</strong></p>
+<p>Существует приличное множество модификаций стохастического градиентного спуска, все из которых используются на практике при обучении сетей:</p>
 <ul>
-<li>Как упорядочить поисковую выдачу?</li>
-<li>Какие фильмы рекомендовать посетителю?</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Вопрос</strong></p>
-<p>Нужно определить является ли данный прибор бракованным по его характеристикам</p>
-<ul>
-<li>К какой из задач это можно свести?</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Модель</strong></p>
-<p>Модель это семейство функций $A = \{g(x,\theta)\space|\space \theta \in \Theta\}$. $\theta$ называют параметрами модели. При конкретном $\theta$ получаем фиксированную функцию $g(x)$.</p>
-<p>Построение фиксированной функции $g$ по заданной обучающей выборке - это обучающий алгоритм (метод обучения).
-Обычно обучающий алгоритм тоже имеет параметры (например, скорость обучения) - их называют гиперпараметрами.</p>
-<p>Пример</p>
-<ul>
-<li>Линейная модель $a(x, w) = sign(w_0+w_1 x^1 + w_2 x^2 + ... + w_d x^d)$</li>
-<li>w - параметры модели</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Виды моделей</strong></p>
-<p>На практике используется большое количество разных типов моделей:</p>
-<ul>
-<li>линейные модели (линейная, логистическая регрессия)</li>
-<li>метрические (метод ближайших соседей)</li>
-<li>модели на основе решающих деревьев (случайный лес, бустинг)</li>
-<li>вероятностные модели <ul>
-<li>наивный байесовский классификатор</li>
-<li>графические модели </li>
-<li>марковские цепи</li>
-<li>...</li>
-</ul>
+<li><p>Обычный градиентный шаг <code>x+= -learning_rate * dx</code></p>
 </li>
-<li>нейронные сети</li>
-<li>...</li>
-</ul>
-<p>Для разных задач хорошо себя показывают разные типы моделей (про это есть также теоретическй результат - no free lunch theorem).</p>
+<li><p>Momentum - экспоненциальное скользящее среднее по $\approx \dfrac{1}{1-\gamma}$ итерациям спуска:</p>
 
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Эмпирический риск</strong></p>
-<p>$ L(x, a) $ - функция потерь: значение ошибки алгоритма $a \in A$ на примере $x \in X$.</p>
-<p>Эмпирический риск: $Q(a, B)$ - ошибка алгоритма $a\in A$ на выборке $B \subset X$.</p>
-<p>Синонимы: функционал ошибки, ошибка алгоритма на выборке.</p>
-$$Q(a, B) = \sum_{x \in B} L(x, a) $$
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Эмпирический риск</strong></p>
-<p>Для классификации:</p>
-<ul>
-<li>доля неправильных ответов</li>
-</ul>
-<p>Для регрессии:</p>
-<ul>
-<li>$ Q(a, B) = \frac{1}{N}\sum_\limits{i=1}^{N}\mid a(x_i)-y_i\mid $ - средняя абсолютная ошибка (MAE) </li>
-<li>$ Q(a, B) = \frac{1}{N}\sum_\limits{i=1}^{N}( a(x_i)-y_i)^2 $ - средняя квадратичная ошибка (MSE) </li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Метод минимизации эмпирического риска</strong></p>
-<p>Метод (принцип) минимизации эмпирического риска - искать тот алгоритм, который дает минимум $Q(a, B)$ на данной выборке.</p>
-<p>Это главный принцип, используемый в машинном обучении - он сводит задачу обучения к задаче оптимизации.</p>
-<p>Пример: метод наименьших квадратов.</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Проблема обобщающей способности</strong></p>
-<p>Будет-ли алгоритм с маленькой ошибкой на множестве $B$ давать маленькую ошибку на всем множестве $X$?</p>
-<p>Приблизит-ли он реальную закономерность или просто переобучится на множество $B$?</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Недообучение</strong></p>
-<p>$g(x)=w_0+w_1 x$</p>
-<p><img src="underfit.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Хороший результат</strong></p>
-<p>$g(x)=w_0+w_1 x + w_2 x^2 + w_3 x^3 $</p>
-<p><img src="fit.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Переобучение</strong></p>
-<p>$ g(x)=w_0 + w_1 x + w_2 x^2 + ... + w_9 x^9 $</p>
-<p><img src="overfit.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Переобучение</strong></p>
-<p>Переобучение есть всегда</p>
-<ul>
-<li>обучающая выборка конечна и не полна</li>
-<li>достоверно отличить случайные флуктуации от закономерностей на ней нельзя</li>
-</ul>
-<p><em>Но</em>, также:</p>
-<ul>
-<li>чрезмерная сложность модели (по количеству параметров, выразительной способности) поощряет подгонку под обучающее множество</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Вопрос</strong></p>
-<p>Можно-ли оценить переобучение по работе модели на обучающей выборке?</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Как обнаружить переобучение</strong></p>
-<p>Чтобы оценить переобучение мало обучающей выборки - нужны дополнительные данные. Способы:</p>
-<ul>
-<li>Разбиение выборки на две - обучающую и тестовую (hold-out set)</li>
-<li>Кросс-валидация</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Обучающая, валидационная и тестовые выборки</strong></p>
-<ul>
-<li><p>На практике вместо разбиения на две, обычно разбивают на три выборки:</p>
-<ul>
-<li>обучающая - используется чтобы обучить алгоритм</li>
-<li>валидационная - для подбора гиперпараметров</li>
-<li>тестовая - для итоговой оценки качества и обнаружения переобучения </li>
-</ul>
-<p>Часто встречающиеся разбиения: 60/20/20.</p>
+<pre><code>v = mu * v - learning_rate * dx # накапливаем скорость
+x += v # меняем позицию</code></pre>
+</li>
+<li>Nesterov momentum:
+<pre><code>v_prev = v # сохраняем старое значение скорости
+v = mu * v - learning_rate * dx # накапливаем скорость
+x += -mu * v_prev + (1 + mu) * v # обновляем позицию от точки "x - mu * v_prev" вместо x</code></pre>
 </li>
 </ul>
 
@@ -13679,37 +13745,40 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Обучающая, валидационная и тестовые выборки</strong></p>
-<p>На практике часто используется т.н. early stopping - во время обучения смотрят на ошибку модели на валидационном множестве и останавливают его когда ошибка растет несколько итераций подряд</p>
-<p><img src="learning_curve.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Кросс-валидация</strong></p>
-<p>Обучение набора моделей и их оценка на различных подмножествах обучающей выборки</p>
-<p>Пример: K-fold кросс-валидация</p>
-<p><img src="kfold.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Как бороться с переобучением</strong></p>
+<p><strong>Momentum</strong></p>
 <ul>
-<li>Уменьшать мощность модели (как семейства функций $A=\{g|\theta \in \Theta\}$):<ul>
-<li>выбрать более простую модель (другими словами более простой класс функций)</li>
-<li>Ограничить параметры модели - это называется регуляризацией</li>
-<li>Использовать валидационное множество/кросс-валидацию для настройки параметров регуляризации и гиперпараметров</li>
+<li>Физическая аналогия для этих эвристик - накопление импульса при спуске (шар с ненулевой массой)</li>
+</ul>
+<p><img src="momentum.jpeg" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Методы с адаптивной скоростью обучения</strong></p>
+<ul>
+<li>Adagrad:
+<pre><code># dx - градиент, x - вектор параметров
+cache += dx**2
+x += - learning_rate * dx / (np.sqrt(cache) + eps)</code></pre>
+<ul>
+<li>Скорость обучения своя под каждый параметр:<ul>
+<li>Большая производная от параметра - скорость обучения падает</li>
+<li>Маленькая производная - скорость обучения растет</li>
 </ul>
 </li>
-<li>Увеличить обучающую выборку </li>
-<li>Строить ансамбли алгоритмов</li>
+</ul>
+</li>
+<li>RMSProp:
+<pre><code>cache = decay_rate * cache + (1 - decay_rate) * dx**2
+x += - learning_rate * dx / (np.sqrt(cache) + eps)</code></pre>
+<ul>
+<li>decay_rate - гиперпараметр с типичными значениями 0.9, 0.99, 0.999</li>
+<li>В отличие от Adagrad обновления скорости обучения не монотонны</li>
+</ul>
+</li>
 </ul>
 
 </div>
@@ -13718,21 +13787,21 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Задача: Кошка или собака?</strong></p>
-<div><img src="cat.jpg" width="30%"> <img src="dog.jpg" width="30%"></div>
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Задача: Кошка или собака?</strong></p>
-<p>Дано:
-25 000 изображений собак и кошек (фото собак и кошек приблизительно равное число).</p>
-<p>Найти:
-Для данной фотографии сказать - на ней кошка или собака.</p>
-<p>Вопрос: Какая это задача?</p>
-<p>Вопрос: каким образом будем разбивать выборку?</p>
+<p><strong>Методы с адаптивной скоростью обучения</strong></p>
+<ul>
+<li>Adam - сейчас чаще всего используется на практике
+<pre><code># t - номер итерации 
+m = beta1*m + (1-beta1)*dx
+mt = m / (1-beta1**t)
+v = beta2*v + (1-beta2)*(dx**2)
+vt = v / (1-beta2**t)
+x += - learning_rate * mt / (np.sqrt(vt) + eps)</code></pre>
+<ul>
+<li>Напоминает комбинацию RMSProp и Nesterov momentum</li>
+<li>Рекомендуемые значения гиперпараметров <code>eps = 1e-8</code>, <code>beta1 = 0.9</code>, <code>beta2 = 0.999</code></li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
@@ -13740,18 +13809,68 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Задача: Кошка или собака?</strong></p>
-<p>Решаем задачу классификации.</p>
-<p>Разобъем выборку в соотношении 60/20/20 на train, validation и test.</p>
-<p>Классификатор: логистическая регрессия</p>
-<p>Представление признаков:</p>
-<ol>
-<li>Преобразуем изображения к черно-белому.</li>
-<li>уменьшим изображения до размера 100x100 и возьмем вектор пикселей как вектор признаков.</li>
-</ol>
-<p>Вопросы:</p>
-<p>Как будем настраивать гиперпараметры классификатора?</p>
-<p>Как оценим качество модели (её обобщающую способность)?</p>
+<p><strong>Визуализация сходимости методов</strong>
+<img src="optimizers.gif" alt=""></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Визуализация сходимости методов</strong></p>
+<p>Наблюдение:
+Несмотря на то что это всего-лишь эвристики, они обладают большим влиянием на скорость сходимости спуска.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Dropout</strong></p>
+<p>Идея:</p>
+<ul>
+<li>Во время обучения (но не применения!) будем случайным образом "выключать" нейроны</li>
+</ul>
+<p>Мотивы:</p>
+<ul>
+<li>получаем приближение ансамбля из $2^N$ сетей с общими весами, но разными связями между нейронами</li>
+<li>тренируем сеть наиболее устойчивую к утрате нейронов надеясь что она будет надежной</li>
+<li>заставляем разные части сети решать одну и ту-же задачу, а не компенсировать ошибки других частей</li>
+</ul>
+<p>Результат:</p>
+<p>Отличный метод борбы с переобучением нейронных сетей</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Инициализация весов</strong></p>
+<p>Как <strong>не надо</strong> делать:</p>
+<ul>
+<li>инициализация нулями (эффективно погасит градиенты)</li>
+</ul>
+<p>Для неглубоких сетей (2-5 слоев):</p>
+<ul>
+<li>инициализация небольшими случайными значениями около нуля</li>
+</ul>
+<p>Для глубоких сетей применяют спец. методы исходящие из статистических соображений:</p>
+<ul>
+<li><p>Для симметричных функций активации с нулевым средним:</p>
+<ul>
+<li>инициализация Ксавье </li>
+</ul>
+</li>
+<li><p>Для ReLU, sigmoid и подобных несиммметричных функций:</p>
+<ul>
+<li>Инициализация Хе</li>
+</ul>
+</li>
+<li>Batch normalisation - нормализация выходов слоев (до активации) по мини-батчам</li>
+</ul>
 
 </div>
 </div>
@@ -13760,18 +13879,19 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Заключение</strong></p>
-<p>Общий вид процесса (пайплайна) обучения модели</p>
-<ol>
-<li>Подготовить данные</li>
-<li>Разделить обучающую выборку на train, validation и test</li>
-<li>Подобрать гиперпараметры тренируя модель на train и оценивая качество на validation.</li>
-<li>Обучить модель на train и validation.</li>
-<li>Оценить качество модели на test.</li>
-</ol>
-<p>Вместо пары множеств train и validation можно использовать кросс-валидацию.</p>
-<p>Что в итоге происходит?</p>
 <ul>
-<li>Автоматическая подгонка некоторых эвристик (параметров модели) под обучающую выборку (минимизация эмпирического риска) с целью получить маленькую ошибку на контрольной выборке (обобщающая способность)</li>
+<li>Нейронные сети - универсальный аппроксиматор</li>
+<li>На практике сейчас их описывают на языке графов вычислений</li>
+<li>Нейронные сети обычно обучаются вариациями стохастического градиентного спуска<ul>
+<li>градиент вычисляют методом обратного распространения ошибки</li>
+</ul>
+</li>
+<li>Существует очень большое количество эвристик связанных с обучением нейронных сетей<ul>
+<li>Много модификаций алгоритма стохастического градиентного спуска</li>
+<li>Дополнительные методы регуляризации (dropout)</li>
+<li>Специальные методы инициализации весов</li>
+</ul>
+</li>
 </ul>
 
 </div>
