@@ -13281,7 +13281,6 @@ a.anchor-link {
 <ul>
 <li><a href="https://www.coursera.org/learn/supervised-learning/">Специализации яндекса по машинному обучению</a></li>
 <li><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9C%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_%28%D0%BA%D1%83%D1%80%D1%81_%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D0%B9%2C_%D0%9A.%D0%92.%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D1%86%D0%BE%D0%B2%29">Курса К. Воронцова по машинному обучению</a></li>
-<li><a href="http://cs231n.github.io/">Курса CS231n Стэнфордского университета</a></li>
 </ul>
 
 </div>
@@ -13309,9 +13308,8 @@ a.anchor-link {
 <li>У термина есть много определений</li>
 <li>Как правило, под ним понимают извлечение закономерностей из примеров</li>
 <li>Применяют в задачах где трудно запрограммировать явные правила:<ul>
-<li>Рекомендации фильмов\книг</li>
-<li>Прогнозирование спроса на товары</li>
-<li>Поиск похожих товаров</li>
+<li>Распознать человека на фотографии</li>
+<li>Рекомендация фильма на сайте</li>
 </ul>
 </li>
 </ul>
@@ -13340,7 +13338,7 @@ a.anchor-link {
 <p><strong>Кластеризация</strong></p>
 <ul>
 <li>Задача: найти группы похожих объектов.</li>
-<li>В отличие от классификации мы не знаем правильных ответов</li>
+<li>... не зная правильных групп (ответов)</li>
 </ul>
 <p><img src="clusterisation.png" alt="alt text"></p>
 
@@ -13356,13 +13354,6 @@ a.anchor-link {
 <li>Сегментация пользователей</li>
 <li>Поиск схожих пользователей</li>
 </ul>
-<p>Алгоритмы:</p>
-<ul>
-<li>KMeans (выделение центроидов)</li>
-<li>ЕМ-алгоритм (работа с распределением)</li>
-<li>DBSCAN (по плотности объектов)</li>
-<li>...</li>
-</ul>
 
 </div>
 </div>
@@ -13372,14 +13363,14 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Понижение размерности</strong></p>
 <ul>
-<li>Задача: представить исходное признаковое описание меньшим количеством признаков (в пространстве меньшей размерности), сохранив как можно больше информации. </li>
+<li>Задача:уменьшить количество признаков сохранив как можно больше информации. </li>
 <li>В случае размерности 2 или 3 получаем задачу визуализации</li>
 </ul>
-<p>Алгоритмы:</p>
-<ul>
-<li>PCA - метод главных компонент</li>
-<li>tSNE</li>
-</ul>
+<p>Пример:</p>
+
+<pre><code>- Из фотографии числа 30x30 (900 признаков) получить два числа (tSNE):
+
+</code></pre>
 <p><img src="tsne_mnist.png" width=40%></p>
 
 </div>
@@ -13392,12 +13383,6 @@ a.anchor-link {
 <ul>
 <li>Задача: определить объект, который не похож на остальных. </li>
 <li>Особенность: аномалий мало или их вообще нет</li>
-</ul>
-<p>Алгоритмы:</p>
-<ul>
-<li>KNN - метод ближайших соседей</li>
-<li>Одноклассовый SVM</li>
-<li>...</li>
 </ul>
 <p>Перейдем к задаче обучения с учителем.</p>
 
@@ -13679,16 +13664,6 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Обучающая, валидационная и тестовые выборки</strong></p>
-<p>На практике часто используется т.н. early stopping - во время обучения смотрят на ошибку модели на валидационном множестве и останавливают его когда ошибка растет несколько итераций подряд</p>
-<p><img src="learning_curve.png" alt="alt text"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Кросс-валидация</strong></p>
 <p>Обучение набора моделей и их оценка на различных подмножествах обучающей выборки</p>
 <p>Пример: K-fold кросс-валидация</p>
@@ -13711,6 +13686,16 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <li>Увеличить обучающую выборку </li>
 <li>Строить ансамбли алгоритмов</li>
 </ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Обучающая, валидационная и тестовые выборки</strong></p>
+<p>На практике часто используется т.н. early stopping - во время обучения смотрят на ошибку модели на валидационном множестве и останавливают его когда ошибка растет несколько итераций подряд</p>
+<p><img src="learning_curve.png" alt="alt text"></p>
 
 </div>
 </div>
@@ -13769,10 +13754,7 @@ $$Q(a, B) = \sum_{x \in B} L(x, a) $$
 <li>Оценить качество модели на test.</li>
 </ol>
 <p>Вместо пары множеств train и validation можно использовать кросс-валидацию.</p>
-<p>Что в итоге происходит?</p>
-<ul>
-<li>Автоматическая подгонка некоторых эвристик (параметров модели) под обучающую выборку (минимизация эмпирического риска) с целью получить маленькую ошибку на контрольной выборке (обобщающая способность)</li>
-</ul>
+<p>Лекции (и задачи на практику) можно посмотреть тут: <a href="https://github.com/frenzykryger/ssu_ds_course">https://github.com/frenzykryger/ssu_ds_course</a></p>
 
 </div>
 </div>
