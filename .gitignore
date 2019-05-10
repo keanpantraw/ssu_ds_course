@@ -111,5 +111,6 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
+.idea/
 data/
+ticket_generator.py
