@@ -37,7 +37,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
 
 <!-- Loading the mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -13626,6 +13626,82 @@ $$ \sigma (\sum w_{ji} x_{kj}) = \sigma(W^T x) $$<p></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Идея, производная сложной функции:</p>
+$$f(g(h(x))' = f'(g) g'(h) h'(x)$$<p></p>
+<p>Наивный подход:</p>
+
+<pre><code>d_f_x = d(f, g) * d(g, h) * d(h, x)
+d_f_h = d(f, g) * d(g, h)
+d_f_g = d(f, g)</code></pre>
+<p>Обратное распространение ошибки:</p>
+
+<pre><code>acc = 1
+derivatives = []
+for deriv in [d(f, g), d(g, h), d(h, x)]:
+    acc *= deriv
+    derivatives.append(acc)
+d_f_x, d_f_h, d_f_g = derivatives</code></pre>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>На практике у каждой функции есть обучаемые параметры и наша задача посчитать производные по всем параметрам:</p>
+$$ f(A, g(B, h(C, x))$$
+<pre><code>A = parameter()
+B = parameter()
+C = parameter()
+x = input()
+h = Func(C, x)
+g = Func(B, h)
+f = Func(A, g)</code></pre>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Считаем прямой ход</p>
+$$ output = f(A, g(B, h(C, x))$$
+<pre><code>def forward(f, x):
+    layers = f.layers() # возвращает [f, g, h]
+    output = x
+    for layer in layers[::-1]: # сначала h, потом g, потом f
+        output = layer(output)
+    return output
+
+output = forward(network, x)</code></pre>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
+<p>Считаем обратный ход</p>
+$$ \dfrac{\partial f}{d A}, \dfrac{\partial f}{d B}, \dfrac{\partial f}{d C}$$
+<pre><code>
+def backprop(f):
+    layers = f.layers()
+    f.grad = 1
+    for layer in network: # f, g, потом h
+        for parameter in layer.parameters(): # [A, g] для f, [B, h] для g, [C] для h
+            parameter.grad = layer.grad * layer.derivative(parameter, layer.output)
+    return f['A'].grad, f['B'].grad, f['C'].grad # градиент</code></pre>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Алгоритм обратного распространения ошибки</strong></p>
 <p>Пример:<br>
 <img src="fully_connected.png" alt=""></p>
 
@@ -14161,7 +14237,7 @@ $$y_i=\gamma \hat{x_i} + \beta $$</p>
 <p>До или после активации?</p>
 <ul>
 <li>Авторы метода рекомендовали применять её до нелинейности (функции активации)</li>
-<li>На практике часто оказывается что модель с BatchNorm после активации работает лучше</li>
+<li>Если применять её после, зачем тогда сдвиг и масштаб?</li>
 </ul>
 
 </div>
