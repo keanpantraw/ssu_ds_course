@@ -13545,61 +13545,6 @@ $$ \sigma (\sum w_{ji} x_{kj}) = \sigma(W^T x) $$<p></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Функции активации</strong></p>
-<ul>
-<li>На практике применяют разные функции активации</li>
-<li>Обычно стараются применять дифференциируемые почти везде (кроме конечного количества точек)</li>
-</ul>
-<p>Очень часто используются:</p>
-<ul>
-<li>$ \sigma(x) = \dfrac{1}{1+e^{-x}}$ сигмоида, например, на выходе для задачи бинарной классификации</li>
-</ul>
-<p><img src="sigmoid.png" alt=""></p>
-<ul>
-<li>$ softmax(x_j) = \dfrac{e^{x_j}}{\sum_{i}{e^{x_i}}} $ - софтмакс, чаще всего на выходе для задачи с несколькими непересекающимися классами</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Функции активации</strong></p>
-<p>$ tanh(x) $ - гиперболический тангенс, предлагался как альтернатива $\sigma(x)$ на скрытых слоях сети</p>
-<ul>
-<li>В отличии от $\sigma(x)$ имеем $tanh(0)=0$</li>
-<li>Сети с использованием этой активации легче оптимизируются в сравнении с теми что используют сигмоиду
-<img src="Tanh.gif" alt=""></li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Функции активации</strong></p>
-<p>$ ReLU(x) = max(x, 0) $ - REctified Linear Unit, широко используется сейчас для скрытых слоёв сетей</p>
-<ul>
-<li>Хорошо показала себя на практике<ul>
-<li>Сети обычно быстрее сходятся в сравнении с sigmoid/tanh</li>
-</ul>
-</li>
-<li>Легче вычислить в отличие от  $\sigma(x)$ и $tanh(x)$</li>
-<li>Активации достаточно часто могут быть равны нулю<ul>
-<li>Есть модификации, например, LeakyReLU - когда значение !=0 когда x&lt;0</li>
-</ul>
-</li>
-</ul>
-<p><img src="relu.png" width="50%"></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Обучение нейронных сетей</strong></p>
 <ul>
 <li>Как-правило для обучения сети требуется довольно большая выборка</li>
@@ -13650,7 +13595,7 @@ d_f_x, d_f_h, d_f_g = derivatives</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Алгоритм обратного распространения ошибки</strong></p>
 <p>На практике у каждой функции есть обучаемые параметры и наша задача посчитать производные по всем параметрам:</p>
-$$ f(A, g(B, h(C, x))$$
+$$ f(A, g(B, h(C, x)))$$
 <pre><code>A = parameter()
 B = parameter()
 C = parameter()
@@ -13667,12 +13612,13 @@ f = Func(A, g)</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Алгоритм обратного распространения ошибки</strong></p>
 <p>Считаем прямой ход</p>
-$$ output = f(A, g(B, h(C, x))$$
+$$ output = f(A, g(B, h(C, x)))$$
 <pre><code>def forward(f, x):
     layers = f.layers() # возвращает [f, g, h]
     output = x
     for layer in layers[::-1]: # сначала h, потом g, потом f
         output = layer(output)
+        layer.output = output
     return output
 
 output = forward(network, x)</code></pre>
@@ -13702,140 +13648,6 @@ def backprop(f):
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Пример:<br>
-<img src="fully_connected.png" alt=""></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Пример:</p>
-<ul>
-<li><p>Скрытый слой $$ u_h(x) = \sigma_{h} (\sum_\limits{j=0}^{n}{w_{jh} x^j}) $$
-Здесь $w_{jh}$ - вес связи признака $x^j$ примера $x$ и нейрона h скрытого слоя</p>
-</li>
-<li><p>Выходной слой $$a_m(x) = \sigma_{m} (\sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)}) $$
-Здесь $w_{hm}$ - вес связи нейрона h скрытого слоя и нейрона m выходного слоя</p>
-</li>
-<li><p>Среднеквадратичная функция потерь
-$$ SE(x, y) = \dfrac{1}{2} \sum_\limits{m=1}^{M} (a_{m}(x) - y_{m})^2 $$</p>
-</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Задача:</p>
-<ul>
-<li>Найти градиент - вектор производных по параметрам модели</li>
-</ul>
-<p>Вопрос залу:</p>
-<ul>
-<li>Что за параметры?</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Нужно найти $\nabla SE(w) = ( \dfrac{\partial SE(w)}{d w_{ij}} ) $ как функции от весов сети.</p>
-$$\dfrac{\partial SE}{d w_{hm}}  = ???$$$$\dfrac{\partial SE}{d w_{jh}}  = ???$$
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Решение: применить правило дифф. сложной функции:</p>
-$$\color{red}{\dfrac{\partial SE}{d w_{hm}}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{hm}}$$$$\dfrac{\partial SE}{d w_{jh}}  = \dfrac{\partial SE}{d u_h} \dfrac{\partial u_h}{d w_{jh}}$$
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Производная по весам выходного слоя:</p>
-$$\color{red}{\dfrac{\partial SE}{d w_{hm}}}  = \dfrac{\partial SE}{d a_m} \color{red}{\dfrac{\partial a_m}{d w_{hm}}}$$$$ \color{red}{\dfrac{\partial a_m}{d w_{hm}}} = \dfrac{\partial \sigma_{m} (\sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)})}{d w_{hm}} = $$<p>Правило дифф. сложной функции:</p>
-$$ = \sigma_m' u_h(x) $$<p>Получаем:</p>
-$$\dfrac{\partial SE}{d w_{hm}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{hm}} = \color{red}{\dfrac{\partial SE}{d a_m}} \sigma_m' u_h(x) $$
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-$$ \color{red}{\dfrac{\partial SE(w)}{d a_{m}}}  = \dfrac{\partial \dfrac{1}{2} \sum_\limits{m=1}^{M} (a_{m}(w) - y_{m})^2}{d a_{m}} = a_m (w) - y_m = \epsilon_m $$<p></p>
-<p>$\epsilon_m$ - значение производной выше, ошибка модели на выходном слое.</p>
-<p>Теперь можно посчитать ошибку по весам выходного слоя:</p>
-$$\dfrac{\partial SE}{d w_{hm}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{hm}} = \color{red}{\dfrac{\partial SE}{d a_m}} \sigma_m' u_h(x)  = \epsilon_m  \sigma_m' u_h(x)$$
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>Посмотрим на ошибку модели на скрытом слое:
-$$\dfrac{\partial SE}{d w_{jh}}  = \color{red}{\dfrac{\partial SE}{d u_h}} \dfrac{\partial u_h}{d w_{jh}}$$</p>
-<ul>
-<li>Правило дифф. сложной функции:
-$$\color{red}{\dfrac{\partial SE(w)}{d u_{h}}} = \sum_\limits{m=1}^{M} \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d u_h} = $$</li>
-<li>Подстановка известного значения производной по $a_m$:
-$$= \sum_\limits{m=1}^{M} \epsilon_m \dfrac{\partial a_m}{d u_h} = $$</li>
-<li>По определению $a_m(x)$:
-$$= \sum_\limits{m=1}^{M} \epsilon_m \dfrac{\partial \sigma_{m} (\sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)})}{d u_h} = $$</li>
-</ul>
-<p>Вопрос:</p>
-<p>Что делаем дальше?</p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<p>... продолжаем искать производную ошибки на скрытом слое:</p>
-<ul>
-<li>Правило дифф. сложной функции, второй раз:
-$$= \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' \dfrac{\partial \sum_\limits{h=0}^{H}{w_{hm} u_{h}(x)}}{d u_h} = $$</li>
-<li>Результат:
-$$= \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' w_{hm}$$</li>
-</ul>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
-<ul>
-<li>Теперь можно посчитать производные по весам скрытого слоя:
-$$\dfrac{\partial SE(w)}{d u_{h}} = \sum_\limits{m=1}^{M} \epsilon_m \sigma_m' w_{hm} = \epsilon_h$$</li>
-</ul>
-$$\dfrac{\partial SE}{d w_{jh}}  = \color{red}{\dfrac{\partial SE}{d u_h}} \dfrac{\partial u_h}{d w_{jh}} = \color{red}{\epsilon_h} \dfrac{\partial u_h}{d w_{jh}} = \epsilon_h \color{red}{\dfrac{\partial u_h}{d w_{jh}}} = \epsilon_h \color{red}{\sigma_h' x^j} $$<p><img src="backprop.png" alt=""></p>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Алгоритм обратного распространения ошибки</strong></p>
 <p>Наблюдения:</p>
 <ul>
 <li>значение производной можно получить запустив сеть "наоборот"</li>
@@ -13845,9 +13657,7 @@ $$\dfrac{\partial SE}{d w_{jh}}  = \color{red}{\dfrac{\partial SE}{d u_h}} \dfra
 </ul>
 </li>
 </ul>
-<p>Окончательное решение:
-$$\dfrac{\partial SE}{d w_{hm}}  = \dfrac{\partial SE}{d a_m} \dfrac{\partial a_m}{d w_{hm}} = \epsilon_m \sigma_m' u_h(x)$$</p>
-$$\dfrac{\partial SE}{d w_{jh}}  = \dfrac{\partial SE}{d u_h} \dfrac{\partial u_h}{d w_{jh}} =  \epsilon_h \sigma_h' x^j $$
+
 </div>
 </div>
 </div></section></section><section><section>
@@ -14057,6 +13867,61 @@ $$ w_t = w_{t-1}-h_t$$</p>
 <p><strong>Визуализация сходимости методов</strong></p>
 <p>Наблюдение:
 Несмотря на то что это всего-лишь эвристики, они обладают большим влиянием на скорость сходимости спуска.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<ul>
+<li>На практике применяют разные функции активации</li>
+<li>Обычно стараются применять дифференциируемые почти везде (кроме конечного количества точек)</li>
+</ul>
+<p>Очень часто используются:</p>
+<ul>
+<li>$ \sigma(x) = \dfrac{1}{1+e^{-x}}$ сигмоида, например, на выходе для задачи бинарной классификации</li>
+</ul>
+<p><img src="sigmoid.png" alt=""></p>
+<ul>
+<li>$ softmax(x_j) = \dfrac{e^{x_j}}{\sum_{i}{e^{x_i}}} $ - софтмакс, чаще всего на выходе для задачи с несколькими непересекающимися классами</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<p>$ tanh(x) $ - гиперболический тангенс, предлагался как альтернатива $\sigma(x)$ на скрытых слоях сети</p>
+<ul>
+<li>В отличии от $\sigma(x)$ имеем $tanh(0)=0$</li>
+<li>Сети с использованием этой активации легче оптимизируются в сравнении с теми что используют сигмоиду
+<img src="Tanh.gif" alt=""></li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Функции активации</strong></p>
+<p>$ ReLU(x) = max(x, 0) $ - REctified Linear Unit, широко используется сейчас для скрытых слоёв сетей</p>
+<ul>
+<li>Хорошо показала себя на практике<ul>
+<li>Сети обычно быстрее сходятся в сравнении с sigmoid/tanh</li>
+</ul>
+</li>
+<li>Легче вычислить в отличие от  $\sigma(x)$ и $tanh(x)$</li>
+<li>Активации достаточно часто могут быть равны нулю<ul>
+<li>Есть модификации, например, LeakyReLU - когда значение !=0 когда x&lt;0</li>
+</ul>
+</li>
+</ul>
+<p><img src="relu.png" width="50%"></p>
 
 </div>
 </div>
