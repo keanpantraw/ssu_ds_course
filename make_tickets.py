@@ -6,8 +6,12 @@ import re
 
 def create_tickets(random_seed=np.random.randint((2**32 - 1)), n_tickets=50, n_questions_in_ticket=4, questions_url="https://docs.google.com/document/u/2/export?format=txt&id=1lzrt7C0kPGoks3IvuirrBbBHFl2DGrFfxfC4oXU0dcw"):
     np.random.seed(int(random_seed))
-    r = requests.get(questions_url)
-    text = r.text
+    if questions_url.startswith("http"):
+        r = requests.get(questions_url)
+        text = r.text
+    else:
+        with open(questions_url, "r") as f:
+            text = f.read()
     lectures = [lecture.strip() for lecture in re.split(u"Лекция.+$", text, flags=re.MULTILINE)]
     lectures = lectures[1:]
     
@@ -29,7 +33,8 @@ def parse_questions(lecture):
 def generate_tickets(questions, n_questions_in_ticket, n_tickets):
     tickets = set([])
     while len(tickets) < n_tickets:
-        selected_lectures = np.random.choice(questions, size=n_questions_in_ticket)
+        indices = list(range(len(questions)))
+        selected_lectures = [questions[i] for i in np.random.choice(indices, size=n_questions_in_ticket)]
         ticket = []
         for lecture in selected_lectures:
             ticket.append(np.random.choice(lecture))
